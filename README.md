@@ -1,5 +1,5 @@
 
-## Flask API Example: Building a Simple API with GitHub Actions
+## Flask API Example: Building a Simple API with GitHub Actions using Heroku Hosting Services
 
 ### Installation
 Follow these steps to install and run the project on your local machine.
@@ -80,6 +80,68 @@ When you're done using the project, deactivate the virtual environment:
   ```bash
   deactivate
   ```
+
+### Prepare a Flask application for Heroku
+1. Create the Procfile
+  ```bash
+    web: gunicorn wsgi:app
+  ```
+  or
+  ```bash
+    web: gunicorn app:app
+  ```
+  Note: You can store the code below in wsgi.py or you can store it in app.py with the rest of the code. Just update your procfile according to this. I choose to store it in app.py so in my procfile it is web: gunicorn app:app
+  
+  ```bash
+    if __name__ == '__main__':
+      app.run(host='0.0.0.0')
+  ```
+  
+2. Create the requirements.txt 
+  Heroku needs requirements.txt to understand that it is a python app
+
+  gunicorn is needed for Heroku 
+  You can install it by 
+  ```bash
+    pip install gunicorn
+  ```
+
+  ```bash
+    pip freeze > requirements.txt
+  ```
+
+3. Create the runtime.txt
+  Python version os stored in runtime.txt
+  You can figure out the python version by running;
+  ```bash
+    python --version
+  ```
+  then correct the version but syntax needs to be in the following format.
+
+  ```bash
+    python-3.10.6
+  ```
+
+### Set up Heroku
+
+1. Install Heroku CLI and the login via terminal(for linux).
+
+  ```bash
+    heroku login
+  ```
+
+2. Create a Heroku app
+
+  ```bash
+    heroku create simpleflask
+  ```
+
+### Build a CI/CD pipeline with GitHub Actions
+
+After pushing the code to the repository, the CI/CD pipeline will automatically initiate, and GitHub will take care of the subsequent processes. You can observe this by navigating to the "Actions" tab. 
+
+Do not forget to add your private variables into secrets
+e.g. secrets.HEROKU_API_KEY
 
 ### Troubleshooting
 
