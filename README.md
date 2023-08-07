@@ -1,5 +1,8 @@
 
 ## Flask API Example: Building a Simple API with GitHub Actions
+### TODO
+- When I am using only github actions It seems to be running somewhere However I do not know how I can reach the flask API
+- I tried to reach it inside the CI/CD however the server is not returning something.
 
 ### Installation
 Follow these steps to install and run the project on your local machine.

@@ -13,26 +13,46 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
-    # steps:
-    # - uses: actions/checkout@v3
-    # - name: Set up Python 3.10
-    #   uses: actions/setup-python@v3
-    #   with:
-    #     python-version: "3.10"
-        
-    # - name: Install dependencies
-    #   run: |
-    #     python -m pip install --upgrade pip
-    #     pip install flask
-        
-    # - name: Run Flask API
-    #   run: python main.py
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: "3.10"
+        
+    - name: Build Docker image
+      run: docker build -t flask-api .
+        
+    - name: Run Docker container
+      run: docker run -d -p 5000:5000 --name flask-api-container flask-api
 
-      - name: Build Docker image
-        run: docker build -t flask-api .
+    - name: Get Public IP
+      id: get-ip
+      run: echo "::set-output name=IP::$(curl -s https://api64.ipify.org?format=json | jq -r .ip)"
 
-      - name: Run Docker container
-        run: docker run -d -p 5000:5000 --name flask-api-container flask-api
+    - name: Show IP Address
+      run: echo ${{ steps.get-ip.outputs.IP }}
+
+    - name: see directory
+      run: ls
+
+    - name: Wait for API to start
+      run: sleep 30
+
+    - name: Check Container Status
+      run: docker ps -a
+
+    - name: see at least it is working
+      run: echo curl http://127.0.0.1:5000
+
+    - name: Check Container Status
+      run: docker ps -a
+
+    - name: Print Docker Logs
+      run: docker logs flask-api-container
+
+    # - name: is working
+    #   run: curl http://127.0.0.1:5000
+
+    # - name: Send API Request
+    #   run: curl ${{ steps.get-ip.outputs.IP }}:5000
