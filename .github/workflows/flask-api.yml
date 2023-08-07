@@ -13,17 +13,26 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    # steps:
+    # - uses: actions/checkout@v3
+    # - name: Set up Python 3.10
+    #   uses: actions/setup-python@v3
+    #   with:
+    #     python-version: "3.10"
+        
+    # - name: Install dependencies
+    #   run: |
+    #     python -m pip install --upgrade pip
+    #     pip install flask
+        
+    # - name: Run Flask API
+    #   run: python main.py
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-        
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flask
-        
-    - name: Run Flask API
-      run: python main.py
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker image
+        run: docker build -t flask-api .
+
+      - name: Run Docker container
+        run: docker run -d -p 5000:5000 --name flask-api-container flask-api
