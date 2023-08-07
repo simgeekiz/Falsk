@@ -146,3 +146,6 @@ e.g. secrets.HEROKU_API_KEY
 ### Troubleshooting
 
 If you encounter any issues during the installation process, feel free to open an issue for assistance.
+
+# Licence 
+  MIT License: http://igliu.mit-license.org/
